@@ -24,6 +24,11 @@ export class PostRoutes extends Router {
                 PostsController.create(req, res);
             })
 
+        this.app.patch('/posts/update/:id', [authenticate, validate(createSchema)],
+            (req: express.Request, res: express.Response) => {
+                PostsController.update(req, res);
+            })
+
 
         return this.app;
     }

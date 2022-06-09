@@ -2,6 +2,7 @@ import { prisma } from "../app";
 import express from "express"
 
 export default class PostsController {
+
     public static async index(req: express.Request, res: express.Response) {
         const posts = await prisma.post.findMany()
         return res.json({ posts });
@@ -20,5 +21,20 @@ export default class PostsController {
             }
         });
         return res.json({ post });
+    }
+
+    public static async update(req: express.Request, res: express.Response) {
+        const { id } = req.params;
+        const { title, content } = req.body;
+
+        const post = await prisma.post.update({
+            where: { id: parseInt(id) },
+            data: {
+                title: title,
+                content: content
+            }
+        });
+
+        return res.json({ message: "Post Updated", post });
     }
 }
