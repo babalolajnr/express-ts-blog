@@ -44,17 +44,18 @@ export default class AuthController {
 
     public static async register(req: express.Request, res: express.Response): Promise<express.Response> {
 
-        const { name, email, password, confirmPassword } = req.body
+        const { name, email, password } = req.body
 
-        const saltRounds = 10;
+        const exists = await prisma.user.findFirst({ where: { email: email } })
 
-        if (password !== confirmPassword) {
-            return res.status(400).json({ error: 'Passwords do not match' })
+        if (exists) {
+            return res.status(422).send({ message: 'Email already exists' })
         }
 
+        const saltRounds = 10;
         const salt = await bcrypt.genSalt(saltRounds)
         const hash = await bcrypt.hash(password, salt)
-        
+
         const user = await prisma.user.create({
             data: {
                 name: name,
