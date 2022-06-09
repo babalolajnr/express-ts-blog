@@ -9,10 +9,6 @@ export default class AuthController {
     public static async login(req: express.Request, res: express.Response): Promise<express.Response> {
         const { email, password } = req.body;
 
-        if (!email || !password) {
-            return res.status(422).send({ message: 'Please fill all the fields before submitting!' });
-        }
-
         const user = await prisma.user.findFirst({ where: { email: email } });
 
         if (!user) {
@@ -54,7 +50,7 @@ export default class AuthController {
         const salt = await bcrypt.genSalt(saltRounds)
         const hash = await bcrypt.hash(password, salt)
 
-        const user = await prisma.user.create({
+        await prisma.user.create({
             data: {
                 name: name,
                 email: email,
