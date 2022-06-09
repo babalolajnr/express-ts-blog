@@ -2,10 +2,10 @@
   "name": "express-ts-blog",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "tsc && node --unhandled-rejections=strict ./lib/app.js",
-    "launch": "nodemon ./app.ts",
+    "dev": "nodemon ./src/app.ts",
     "debug": "export DEBUG=* && npm run start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
