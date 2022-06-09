@@ -1,11 +1,9 @@
 import express from 'express'
-import crypto from 'crypto'
 import bcrypt from 'bcrypt'
-import { PrismaClient } from '@prisma/client'
 import jwt from 'jsonwebtoken'
+import { prisma } from '../app';
 
 
-const prisma = new PrismaClient()
 export default class AuthController {
 
     public static async login(req: express.Request, res: express.Response): Promise<express.Response> {
