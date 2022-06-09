@@ -10,6 +10,7 @@ import dotenv from 'dotenv'
 import { passport, authenticate } from './config/passport'
 import { PrismaClient } from '@prisma/client';
 import Joi from 'joi';
+import { PostRoutes } from './routes/posts';
 
 
 
@@ -53,7 +54,8 @@ if (!process.env.DEBUG) {
     loggerOptions.meta = false; // when not debugging, log requests as one-liners
 }
 
-routes.push(new AuthRoutes(app));
+routes.push(new AuthRoutes(app)); 
+routes.push(new PostRoutes(app));  
 
 const runningMessage = `Server running at http://localhost:${port}`
 
