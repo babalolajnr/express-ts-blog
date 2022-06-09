@@ -34,14 +34,20 @@ const loggerOptions: expressWinston.LoggerOptions = {
 const validate = (schema: Joi.Schema) => (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const { error } = schema.validate(req.body);
 
-    error ? res.status(422).send(error.details[0].message) : next();
+    error ? res.status(422).json(error) : next();
 };
+
+const errorHandler = (err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    debugLog(err.message);
+    res.status(500).send(err.message);
+}
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(passport.initialize())
 app.use(expressWinston.logger(loggerOptions));
+app.use(errorHandler);
 
 if (!process.env.DEBUG) {
     loggerOptions.meta = false; // when not debugging, log requests as one-liners
